@@ -1,0 +1,9 @@
+{
+  "pack": {
+    "description": "§bListAck 1.024x Texture Pack §7- Powered by AI",
+    "pack_format": 34,
+    "min_format": 34,
+    "max_format": 95,
+		"supported_formats": {"min_inclusive": 34, "max_inclusive": 95}
+  }
+}
