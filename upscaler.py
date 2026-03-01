@@ -30,16 +30,20 @@ for f in os.listdir(IN_DIR):
         parts = f.split('_')
         
         if len(parts) >= 3:
-            sub_folders = os.path.join(*parts[:2]) # 'textures/entity'
-            file_name = "_".join(parts[2:])        # 'iron_golem.png'
+            sub_folders = os.path.join(*parts[:2])
+            file_name = "_".join(parts[2:])
         else:
             sub_folders = parts[0]
             file_name = parts[1] if len(parts) > 1 else parts[0]
 
-        # 4. Save to the correct spot
         final_out_dir = os.path.join(OUT_BASE, sub_folders)
         os.makedirs(final_out_dir, exist_ok=True)
         
-        # ... (Your upscaling code here)
-        print(f"✅ Correctly saved to: {sub_folders}/{file_name}")
-
+        img = cv2.imread(os.path.join(IN_DIR, f), cv2.IMREAD_UNCHANGED)
+        if img is None: continue
+        
+        output, _ = upsampler.enhance(img, outscale=64)
+        cv2.imwrite(os.path.join(sub_folders, file_name), output)
+        
+        os.remove(os.path.join(IN_DIR, f))
+        print(f"✅ Correctly saved to: {os.path.join(sub_folders, file_name)}")
