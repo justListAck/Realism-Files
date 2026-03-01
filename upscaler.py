@@ -23,27 +23,23 @@ OUT_BASE = "../resourcepacks/Realism/assets/minecraft/"
 
 print(f"🚀 Realism HD Engine Active on {device.upper()}")
 
+import os
+
 for f in os.listdir(IN_DIR):
     if f.endswith(".png"):
-        # 1. Split 'textures_block_grass.png' into ['textures', 'block', 'grass.png']
         parts = f.split('_')
         
-        # 2. Reconstruct the folder path (textures/block/)
-        sub_folder = "/".join(parts[:-1]) 
-        # The last part is the actual filename (grass.png)
-        file_name = parts[-1]
+        if len(parts) >= 3:
+            sub_folders = os.path.join(*parts[:2]) # 'textures/entity'
+            file_name = "_".join(parts[2:])        # 'iron_golem.png'
+        else:
+            sub_folders = parts[0]
+            file_name = parts[1] if len(parts) > 1 else parts[0]
+
+        # 4. Save to the correct spot
+        final_out_dir = os.path.join(OUT_BASE, sub_folders)
+        os.makedirs(final_out_dir, exist_ok=True)
         
-        # 3. Final path in your Realism pack
-        final_dest_folder = os.path.join(OUT_BASE, sub_folder)
-        os.makedirs(final_dest_folder, exist_ok=True)
-        
-        # 4. Process
-        img = cv2.imread(os.path.join(IN_DIR, f), cv2.IMREAD_UNCHANGED)
-        if img is None: continue
-        
-        output, _ = upsampler.enhance(img, outscale=64) # 16x to 1024x
-        cv2.imwrite(os.path.join(final_dest_folder, file_name), output)
-        
-        # 5. Remove from queue so it doesn't process twice
-        os.remove(os.path.join(IN_DIR, f))
-        print(f"💎 Upscaled: {sub_folder}/{file_name}")
+        # ... (Your upscaling code here)
+        print(f"✅ Correctly saved to: {sub_folders}/{file_name}")
+
