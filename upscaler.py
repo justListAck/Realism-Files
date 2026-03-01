@@ -19,7 +19,7 @@ upsampler = RealESRGANer(
 )
 
 IN_DIR = "input_queue/"
-OUT_BASE = "../resourcepacks/Realism/assets/minecraft/textures/"
+OUT_BASE = "../resourcepacks/Realism/assets/minecraft/"
 
 print(f"🚀 Realism HD Engine Active on {device.upper()}")
 
